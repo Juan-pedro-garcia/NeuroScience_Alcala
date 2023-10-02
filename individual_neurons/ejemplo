@@ -1,0 +1,23 @@
+install.packages("stringr")                        # Install stringr package
+library("stringr")   
+texto <- gsub("\r","Ñ",texto)
+texto <- gsub("\n","^",texto)
+
+t <- str_locate_all(texto,"@")[[1]][,1]
+y <- str_locate_all(texto,"Ñ")[[1]][,1]
+
+n <- c()
+m <- c()
+
+for(i in c(1:length(t))){
+  n <- c(n,(t[i]))
+  
+  m <- c(m,y[which(y>t[i])[1]])
+  
+}
+nombres <- c()
+for(i in 1:length(n)){
+nombres <- c(nombres,substring(texto,n[i],m[i]-1))  
+}
+
+sample(nombres,1)

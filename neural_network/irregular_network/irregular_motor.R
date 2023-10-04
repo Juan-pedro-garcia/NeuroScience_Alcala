@@ -631,6 +631,5 @@ for(num_resultados in c(129:144 )) {
   write.csv2(resultados,file = paste0("./resultados/",ruta,"/",Sys.Date(),"datos-",num_resultados,".csv"))
   
   
-  
+}  }
 >>>>>>> a90e1fe6c500ec4ffc0d57d0493b7b7de956d3c1
-}

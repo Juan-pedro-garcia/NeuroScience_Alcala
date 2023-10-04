@@ -213,7 +213,7 @@ for(num_resultados in c(1:71)) {
           if (length(y)==1) {inputs <- circuito[y,]
           }else{inputs <- colSums(circuito[y,]) }
           receptor <- which(inputs!=0)[which(inputs!=0)%in%c((lim+1):size)]   
-          t[receptor] <- round(t[receptor]+((tclave[receptor]-t[receptor]%%(periodo/2))*(inputs[receptor]/20)))
+          t[receptor] <- round(t[receptor]+((tclave[receptor]-t[receptor]%%(periodo[receptor]/2))*(inputs[receptor]/20)))
           reg[receptor] <- punto_medio[receptor]+b[receptor]*cos(a[receptor]*t[receptor])/a[receptor]
         }
         

@@ -1,4 +1,3 @@
-if(!"plotly"%in%installed.packages()[,1]){install.packages("plotly")}
 library(plotly)
 source("./funciones.R")
 system.time({
@@ -34,19 +33,19 @@ system.time({
   f <- sample(aceptables_RS,RS,replace = TRUE)
   g <- sample(aceptables_RSB,RSB,replace = TRUE)
   
-  a <- c(rep(0.02,IS),rep(0.14,ISB),
+  a <- c(rep(0.02,ISe),rep(0.02,ISi),rep(0.14,ISB),
          rep(0.1,IFB),rep(0.02,A),
          datos_RS[f,2],datos_RSB[g,2],datos_RFB[h,2])
   
-  b <- c(rep(0.2,IS),
+  b <- c(rep(0.2,ISe),rep(0.2,ISi),
          runif(ISB,0.263,0.264),
          runif(IFB,0.249,0.251),
          rep(0.2,A),
          datos_RS[f,3],
          datos_RSB[g,3],
          datos_RFB[h,3])
-  c <- c(rep(-65,IS),rep(-65,ISB),rep(-65,IFB),rep(-65,A),rep(-65,RS),rep(-75,RSB),rep(-63,RFB))
-  d <- c(rep(8,IS),runif(ISB,-8,-8),runif(IFB,-8,-7.95),rep(8,A))
+  c <- c(rep(-65,ISe),rep(-65,ISi),rep(-65,ISB),rep(-65,IFB),rep(-65,A),rep(-65,RS),rep(-75,RSB),rep(-63,RFB))
+  d <- c(rep(8,ISe),rep(8,ISi),runif(ISB,-8,-8),runif(IFB,-8,-7.95),rep(8,A))
   periodo <- 2*pi/c(datos_RS[f,2],datos_RSB[g,2],datos_RFB[h,2])
   
   ######## diseño circuito ######
@@ -88,13 +87,13 @@ system.time({
   #############################
   
   
-  library("plot.matrix")
+  # library("plot.matrix")
   
   ######### parámetros controlables del circuito############
   
   max_delay <- 5
   min_delay <- 1
-  tiempo <- 150
+  tiempo <- 100
   
   ############  parámetros y variables internos###############
   

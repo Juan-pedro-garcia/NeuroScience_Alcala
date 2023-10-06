@@ -1,12 +1,16 @@
 library(plotly)
-vector_voltajes <- -65
-reg <- -13
-periodo=191
 
-w=2*pi/periodo
-A=w*3.294903/(cos(w*periodo/2*pi/180)+1)
-a=0.03289624
-b=0.056
+datos_RFB <- read.csv2("./RFB_valors.csv2")
+
+a=datos_RFB[200,"a"]
+b=datos_RFB[200,"b"]
+c=datos_RFB[200,"c"]
+
+periodo <- datos_RFB[200,"period"]
+vector_voltajes <- c
+reg <- -13
+
+
 t=0
 
 punto_medio <- reg-(b*cos(a*0)/a-b*cos(a*pi/a)/a)/2
@@ -22,14 +26,13 @@ for(i in 1:500){
   vector_voltajes=vector_voltajes+0.5*((0.04*vector_voltajes+5)*vector_voltajes+140-reg+input)
   vector_voltajes=vector_voltajes+0.5*((0.04*vector_voltajes+5)*vector_voltajes+140-reg+input)
   reg <- reg-sin((t)*(a))*(b)
-  # print(sin((t)*(a))*(b))
   x[i,1] <- i
   x[i,2] <- vector_voltajes
 
   
   if (vector_voltajes>30) {
     tiempos <- c(tiempos,i)
-    vector_voltajes <- -58
+    vector_voltajes <- c
   }
   if(input!=0){
     t <- round(t+(tclave-t%%(periodo/2)*(input/20)))
@@ -40,18 +43,5 @@ for(i in 1:500){
 plot_ly(x, x=~V1, y=~V2, type ="scatter", mode = 'lines')
 plot(x[,1],x[,2],type="l",xlab="period (ms)",ylab="Volt(mV)")
 plot(x[,1],x[,2],type = "l")
-tiempos <- c(tiempos,5001)
-df <- data.frame(c(1:5000), rep(0,5000))
-i=1
-j=1
-while(i<=5000){
-  
-  if (df[i,1]==tiempos[j]) {
-    df[i,2] <- 5000
-    j=j+1
-  }
-  i=i+1
-}
 
-plot(df[,1],df[,2],type="l")
 

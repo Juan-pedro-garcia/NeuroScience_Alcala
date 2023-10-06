@@ -17,9 +17,9 @@ for(num_resultados in c(1:71)) {
   datos_RSB <- read.csv2("./valores_RSB.csv2")
   aceptables_RSB <- which(datos_RSB[,7]>0.4 &datos_RSB[,7]<0.5 & datos_RSB[,6]<20)
   
-  resultados <- data.frame("0",0,0,0)
+  resultados <- data.frame("0",0,0,0,0)
   colnames(resultados) <- c("superestructura","frecuencia_eventos",
-                            "numero de eventos","num_disparos_total")
+                            "numero de eventos","num_disparos_total","seed")
   
   ruta <- paste0(num_resultados,"_de_144")
   dir.create(paste0("./resultados/",ruta))
@@ -329,6 +329,6 @@ for(num_resultados in c(1:71)) {
    write.table(fuerza,paste0("./resultados/",num_resultados,"_de_144/fuerza.txt"))
    write.table(sinapsis,paste0("./resultados/",num_resultados,"_de_144/sinapsis.txt"))
   
-   write.csv2(resultados,file = paste0("./resultados/",ruta,"/",Sys.Date(),"datos-",num_resultados,".csv"))
+   write.csv2(resultados,file = paste0("./resultados/",ruta,"/",Sys.Date(),"datos-",num_resultados,".csv"),seed)
   
 }

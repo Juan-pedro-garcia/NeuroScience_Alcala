@@ -1,13 +1,9 @@
 library(plotly)
 library(lattice)
 set.seed(sample(c(1:9999),1))
-datos_RFB <- read.csv2("../motores/valores_RFB.csv2")
-aceptables_RFB <- which(1/(datos_RFB[,4]/1000)>2 &1/(datos_RFB[,4]/1000)<9 &datos_RFB[,6]>100)
-vector_voltajes <- rep(-65,10)
+datos_RFB <- read.csv2("./RFB_valors.csv2")
+aceptables_RFB <- which(datos_RFB[,"freq_inter"]>2 & datos_RFB[,"freq_inter"]<9 &datos_RFB[,"freq_intra.ms."]>100)
 
-
-reg <- rep(-13,10)
-periodo=rep(1000,10)
 
 circuito <- matrix(data=0,nrow=10,ncol=10)
 colnames(circuito ) <- rep("RFB",10)
@@ -17,14 +13,19 @@ circuito <-  conexiones(10,10,2,7)
 # circuito[sample(c(1:100),60)] <- circuito[sample(c(1:100),60)]*-1
 
 
-h <- sample(aceptables_RFB,10,replace = TRUE)
+valid <- sample(aceptables_RFB,10,replace = TRUE)
 
 
-a=datos_RFB[h,2]
-b=datos_RFB[h,3]
-c=datos_RFB[h,7]
+a=datos_RFB[valid,"a"]
+b=datos_RFB[valid,"b"]
+c=datos_RFB[valid,"c"]
 t=rep(0,10)
 
+
+
+
+reg <- rep(-13,10)
+periodo=rep(datos_RFB[valid,"period"],10)
 
 vector_voltajes <- c
 punto_medio <- reg-(b*cos(a*0)/a-b*cos(a*pi/a)/a)/2

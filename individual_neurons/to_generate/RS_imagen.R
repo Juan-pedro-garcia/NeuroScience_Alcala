@@ -1,11 +1,9 @@
 correctos <- data.frame(0,0,0,0)
 for (periodo in seq(150,1000,by=1)){
   for(amplitud in seq(0.001,0.50,by=0.001)){
-    print
     vector_voltajes <- -65
     reg <- -13
-    w=2*pi/periodo
-    a=w
+    a=2*pi/periodo
     b=amplitud
     t=0
     

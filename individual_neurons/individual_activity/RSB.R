@@ -1,6 +1,7 @@
 library(plotly)
 
 datos_RSB <- read.csv2("./RSB_valors.csv2")
+aceptables_RSB <- which(datos_RSB[,"freq_inter"]>0.4 & datos_RSB[,"freq_inter"]<0.5 &datos_RSB[,"freq_intra.ms."]<20)
 
 a=datos_RSB[200,"a"]
 b=datos_RSB[200,"b"]
@@ -33,7 +34,6 @@ for(i in 1:4000){
   
   if (vector_voltajes>30) {
     tiempos <- c(tiempos,i)
-    
     vector_voltajes <- c
   }
 

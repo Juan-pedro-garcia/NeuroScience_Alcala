@@ -1,5 +1,5 @@
 library(plotly)
-library(lattice)
+source("./funciones.R")
 set.seed(sample(c(1:9999),1))
 datos_RFB <- read.csv2("./RFB_valors.csv2")
 aceptables_RFB <- which(datos_RFB[,"freq_inter"]>2 & datos_RFB[,"freq_inter"]<9 &datos_RFB[,"freq_intra.ms."]>100)
@@ -51,7 +51,7 @@ for(i in 1:2000){
     disp <- which(vector_voltajes>30)
     if(any(disp==5)){  tiempos <- c(tiempos,i)}
     
-    vector_voltajes[disp] <- c
+    vector_voltajes[disp] <- c[disp]
     if(length(disp)>1){input <- colSums(circuito[disp,])}else{if(length(disp)==1){
       input <- circuito[disp,]
     }}
@@ -64,32 +64,6 @@ for(i in 1:2000){
 plot_ly(x, x=~V1, y=~V2, type ="scatter", mode = 'lines')
 plot(x[,1],x[,2],type = "l")
 
-df <- data.frame(c(1:10000), rep(0,10000))
-tiempos
-i=1
-j=1
-print(length(tiempos))
-while(i<=10000){
-  i=i+1
-  if (df[i,1]==tiempos[j]) {
-    df[i,2] <- 5000
-    j=j+1
-  }
-}
-
-plot(df[,1],df[,2],type="l")
-
-ggplot(aes(tiempos))+
-  geom_segment(aes(x = 1, xend = 1, y = 1, yend = 4), color = "red")
-plot(data.frame(tiempos,2), type = 'o', pch = '|',cex=1, ylab = '',ylim=c(1,5))
-
-plot_ly(x=tiempos,y="",type = "scatter", symbols="|",mode="markers")
-
-
-x <- rnorm(100,10,10)
-color <- rnorm(100, 2,1)
-frame = data.frame(x,color)
-
-plot_ly(type = "scatter", mode = "markers", data = frame, x = ~x, y = " ", color = ~color )
+plot(data.frame(tiempos,2), type = 'o', pch = '|',cex=1, ylab = '',ylim=c(1,3))
 
 

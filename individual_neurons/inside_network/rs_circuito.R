@@ -1,21 +1,26 @@
 library(plotly)
+source("./funciones.R")
 
 set.seed(sample(c(1:9999),1))
-vector_voltajes <- rep(-65,10)
-reg <- rep(-13,10)
-periodo=rep(200,10)
+
+datos_RS <- read.csv2("./RS_valors.csv2")
+aceptables_RS <- which(datos_RS[-1,"freq.ms."]>5 &datos_RS[-1,"freq.ms."]<6)
+
 
 circuito <- matrix(data=0,nrow=10,ncol=10)
 colnames(circuito ) <- rep("RS",10)
 rownames(circuito ) <- rep("RS",10)
 circuito <-  conexiones(10,10,-13,3)
 
+valid <- sample(aceptables_RS,10,replace = TRUE)
 
 
-w=2*pi/periodo
-A=w*3.45/(cos(w*periodo/2*pi/180)+1)
-a=w
-b=A
+vector_voltajes <- rep(-65,10)
+reg <- rep(-13,10)
+periodo=rep(datos_RS[valid,"period"],10)
+a=datos_RS[valid,"a"]
+b=datos_RS[valid,"b"]
+c=rep(-65,10)
 t=rep(0,10)
 
 punto_medio <- reg-(b*cos(a*0)/a-b*cos(a*pi/a)/a)/2
@@ -31,12 +36,10 @@ for(i in 1:10000){
   vector_voltajes=vector_voltajes+0.5*((0.04*vector_voltajes+5)*vector_voltajes+140-reg+input)
   reg <- reg-sin((t)*(a))*(b)
   
-  input <- rep(0, 10)
-  # print(sin((t)*(a))*(b))
+  # input <- rep(0, 10)
   x[i,1] <- i
   x[i,2] <- vector_voltajes[5]
 
-  print(t)
   if (any(vector_voltajes>30)) {
     disp <- which(vector_voltajes>30)
     if(any(disp==5)){  tiempos <- c(tiempos,i)}

@@ -1,4 +1,8 @@
+
+
+
 correctos <- data.frame(0,0,0,0)
+
 for (periodo in seq(150,1000,by=1)){
   for(amplitud in seq(0.001,0.50,by=0.001)){
     vector_voltajes <- -65
@@ -24,7 +28,7 @@ for (periodo in seq(150,1000,by=1)){
     diferencia <- tiempos[-1]-tiempos[-length(tiempos)]
     if (length(diferencia)==0){next}
     if( !(any(diferencia<=(periodo-5)) || any(diferencia>=(periodo+5) ))){
-      correctos <- rbind(correctos,c(a,b,periodo,frec_intra,1/(periodo/1000)))
+      correctos <- rbind(correctos,c(a,b,periodo,frec_intra,1/periodo*1000))
       
       
     }
@@ -38,6 +42,6 @@ for (periodo in seq(150,1000,by=1)){
 
 plot(correctos[-1,3],correctos[-1,1],type="l")
 plot(correctos[-1,3],correctos[-1,2],type="l")
-
-write.csv2(correctos,file="./valores_RS.csv2")
+colnames(correctos) <- c("a","b","period","freq(ms)")
+write.csv2(correctos,file="./valors_RS.csv2")
 

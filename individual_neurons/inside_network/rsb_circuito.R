@@ -1,31 +1,39 @@
 library(plotly)
-set.seed(sample(c(1:9999),1))
+source("./funciones.R")
+seed <- sample(c(1:9999),1)
+set.seed(4854)
 
-
-vector_voltajes <- rep(-75,10)
-reg <- rep(-13,10)
 
 circuito <- matrix(data=0,nrow=10,ncol=10)
 colnames(circuito ) <- rep("RSB",10)
 rownames(circuito ) <- rep("RSB",10)
-circuito <-  conexiones(10,10,10,2)
+circuito <-  conexiones(10,10,8,3)
 
-datos_RSB <- read.csv2("./valores_RSB.csv2")
-aceptables_RSB <- which(datos_RSB[,7]>0.4 &datos_RSB[,7]<0.5 & datos_RSB[,6]<20)
-g <- sample(aceptables_RSB,10,replace = TRUE)
+datos_RSB <- read.csv2("./RSB_valors.csv2")
+aceptables_RSB <- which(datos_RSB[,"freq_inter"]>0.4 &datos_RSB[,"freq_inter"]<0.5 & datos_RSB[,"freq_intra.ms."]<20)
+
+valid <- sample(aceptables_RSB,10,replace = TRUE)
 
 
-a=datos_RSB[g,2]
-b=datos_RSB[g,3]
-c <- rep(-75,10)
+a=datos_RSB[valid,"a"]
+b=datos_RSB[valid,"b"]
+c=datos_RSB[valid,"c"]
 t=rep(0,10)
+
+
+
+
+reg <- rep(-13,10)
+periodo=rep(datos_RSB[valid,"period"],10)
+
+vector_voltajes <- c
 
 punto_medio <- reg-(b*cos(a*0)/a-b*cos(a*pi/a)/a)/2
 tclave <- acos((-16-punto_medio)*a/b)/a
 input <- rep(0,10)
 x <- data.frame()
 tiempos <- c()
-for(i in 1:3000){
+for(i in 1:5000){
   # if(i==25000 ){input <- +20}else{if(i==1500){input <- 10}
   # else{input <- 0}}
   t=t+1
@@ -53,23 +61,8 @@ for(i in 1:3000){
   }
 }
 
-# plot_ly(x, x=~V1, y=~V2, type ="scatter", mode = 'lines')
-# plot(x[,1],x[,2],type = "l")
-# 
-# df <- data.frame(c(1:10000), rep(0,10000))
-# tiempos
-# i=1
-# j=1
-# while(i<=10000){
-#   i=i+1
-#   if (df[i,1]==tiempos[j]) {
-#     df[i,2] <- 5000
-#     j=j+1
-#   }
-# }
-# 
-# plot(df[,1],df[,2],type="l")
-tiempos <- c(-1,tiempos,2000)
+
+tiempos <- c(-1,tiempos)
 plot(data.frame(tiempos,1), type = 'o', pch = '|', ylab = '',xlim=c(1000,3000))
 
 

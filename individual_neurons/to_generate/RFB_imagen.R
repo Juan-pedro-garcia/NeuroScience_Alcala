@@ -1,4 +1,4 @@
-correctos <- data.frame(0,0,0,0,0,0)
+correctos <- data.frame(0,0,0,0,0,0,0)
 contador <- 0
 for(d in seq(-50,-65,by=-1)){
 for (periodo in seq(50,1000,by=1)){
@@ -36,7 +36,7 @@ for (periodo in seq(50,1000,by=1)){
     frec_intra <- 1/(mean(frec_intra)/1000)
     if(frec_intra<130 & frec_intra>90){contador <- contador+1}
     
-    if(contador==2){correctos <- rbind(correctos,c(a,b,periodo,rafaga,frec_intra,d))}
+    if(contador==2){correctos <- rbind(correctos,c(a,b,periodo,rafaga,frec_intra,d,1/periodo*1000))}
     contador <- 0
       
       
@@ -49,5 +49,6 @@ for (periodo in seq(50,1000,by=1)){
 
 plot(correctos[-1,3],correctos[-1,1],type="l")
 plot(correctos[-1,2],correctos[-1,3],type="p")
+colnames(correctos) <- c("a","b","period","number_spikes","freq_intra.ms.","c","freq_inter")
 
-write.csv2(correctos,file="./valores_RFB.csv2")
+write.csv2(correctos,file="./RFB_valors.csv2")

@@ -1,17 +1,14 @@
-correctos <- data.frame(0,0,0,0,0,0)
-l=0
+
+
+
+correctos <- data.frame(0,0,0,0,0,0,0)
 contador <- 0
 
-for (d in seq(-68,-75,by=-1)) {
-  
-  
-  
+for (c in seq(-68,-75,by=-1)) {
   for (periodo in seq(1800 ,2200,by=1)){
-    l=l+1
-    print(l)
     for(amplitud in seq(0.004,0.0068,by=0.0001)){
       contador <- 0
-      vector_voltajes <- d
+      vector_voltajes <- c
       reg <- -13
       w=2*pi/periodo
       a=w
@@ -30,7 +27,7 @@ for (d in seq(-68,-75,by=-1)) {
         x[i,2] <- vector_voltajes
         if (vector_voltajes>30) {
           tiempos <- c(tiempos,i)
-          vector_voltajes <- d
+          vector_voltajes <- c
         }
       }
       if(length(tiempos)==0){next}
@@ -45,7 +42,7 @@ for (d in seq(-68,-75,by=-1)) {
       frec_intra <- 1/(mean(frec_intra)/1000)
       if(frec_intra<25 & frec_intra>12){contador <- contador+1}
       
-      if(contador==2){correctos <- rbind(correctos,c(a,b,periodo,rafaga,frec_intra,d))}
+      if(contador==2){correctos <- rbind(correctos,c(a,b,periodo,rafaga,frec_intra,d,1/periodo*1000))}
     }
   }
   
@@ -53,9 +50,9 @@ for (d in seq(-68,-75,by=-1)) {
 }
 plot(correctos[-1,3],correctos[-1,1],type="l")
 plot(correctos[-1,3],correctos[-1,2],type="l")
-write.csv2(correctos,file="./valores_RSB4.csv2")
+colnames(correctos) <- c("a","b","period","number_spikes","freq_intra.ms.","c","freq_inter")
 
-
+write.csv2(correctos,file="./RSB_valors.csv2")
 
 
 

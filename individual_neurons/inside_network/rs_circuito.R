@@ -4,7 +4,7 @@ source("./funciones.R")
 set.seed(sample(c(1:9999),1))
 
 datos_RS <- read.csv2("./RS_valors.csv2")
-aceptables_RS <- which(datos_RS[-1,"freq.ms."]>5 &datos_RS[-1,"freq.ms."]<6)
+aceptables_RS <- which(datos_RS[,"freq.ms."]>5 &datos_RS[,"freq.ms."]<6)
 
 
 circuito <- matrix(data=0,nrow=10,ncol=10)

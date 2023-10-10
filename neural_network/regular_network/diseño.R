@@ -8,15 +8,15 @@ for(num_resultados in c(1:71)) {
   seed=sample(1:9999,1)
   set.seed(seed)
   
-  datos_RFB <- read.csv2("./valores_RFB2.csv2")
-  aceptables_RFB <- which(1/(datos_RFB[,4]/1000)>2 &1/(datos_RFB[,4]/1000)<9 &datos_RFB[,6]>100)
+  datos_RFB <- read.csv2("./RFB_valors.csv2")
+  aceptables_RFB <- which(datos_RFB[,"freq_inter"]>2 & datos_RFB[,"freq_inter"]<9 &datos_RFB[,"freq_intra.ms."]>100)
   
-  datos_RS <- read.csv2("./valores_RS.csv2")
-  aceptables_RS <- which(1/(datos_RS[,4]/1000)>5 &1/(datos_RS[,4]/1000)<6)
+  datos_RS <- read.csv2("./RS_valors.csv2")
+  aceptables_RS <- which(datos_RS[,"freq.ms."]>5 &datos_RS[,"freq.ms."]<6)
   
-  datos_RSB <- read.csv2("./valores_RSB.csv2")
-  aceptables_RSB <- which(datos_RSB[,7]>0.4 &datos_RSB[,7]<0.5 & datos_RSB[,6]<20)
-  
+  datos_RSB <- read.csv2("./RSB_valors.csv2")
+  aceptables_RSB <- which(datos_RSB[,"freq_inter"]>0.4 &datos_RSB[,"freq_inter"]<0.5 & datos_RSB[,"freq_intra.ms."]<20)
+    
   resultados <- data.frame("0",0,0,0,0)
   colnames(resultados) <- c("superestructura","frecuencia_eventos",
                             "numero de eventos","num_disparos_total","seed")
@@ -62,18 +62,20 @@ for(num_resultados in c(1:71)) {
       
       a <- c(rep(0.02,IS),rep(0.14,ISB),
              rep(0.1,IFB),rep(0.02,A),
-             datos_RS[f,2],datos_RSB[g,2],datos_RFB[h,2])
+             datos_RS[f,"a"],datos_RSB[g,"a"],datos_RFB[h,"a"])
       
       b <- c(rep(0.2,IS),
              runif(ISB,0.263,0.264),
              runif(IFB,0.249,0.251),
              rep(0.2,A),
-             datos_RS[f,3],
-             datos_RSB[g,3],
-             datos_RFB[h,3])
-      c <- c(rep(-65,IS),rep(-65,ISB),rep(-65,IFB),rep(-65,A),rep(-65,RS),rep(-75,RSB),rep(-63,RFB))
+             datos_RS[f,"b"],datos_RSB[g,"b"],datos_RFB[h,"b"])
+      
+      c <- c(rep(-65,IS),rep(-65,ISB),
+             rep(-65,IFB),rep(-65,A),
+             rep(-65,RS),datos_RSB[g,"c"],datos_RFB[h,"c"])
+      
       d <- c(rep(8,IS),runif(ISB,-8,-8),runif(IFB,-8,-7.95),rep(8,A))
-      periodo <- 2*pi/c(datos_RS[f,2],datos_RSB[g,2],datos_RFB[h,2])
+      periodo <-c(datos_RS[f,"period"],datos_RSB[g,"period"],datos_RFB[h,"period"])
       
       ######## tamaño final######
       
@@ -128,8 +130,8 @@ for(num_resultados in c(1:71)) {
     
     contador <- matrix(data=0,nrow=size,ncol=2)
     grupos_nume <- round(size/grupos_tama+0.4)
-    volt <- rep(-65,size)
-    reg <- 0.2*volt
+    volt <- c
+    reg <- rep(-13,size)
     inputs <- rep(0, size)
     
     lim <- datos_conexiones[4,2]
@@ -139,7 +141,7 @@ for(num_resultados in c(1:71)) {
     nombres_grupos <- levels(as.factor(colnames(circuito)))
     # grupo_tag[which(tipos=="A")] <- grupos_nume
     list_aferentes <- which(colnames(circuito)=="A")
-    periodo <- 2*pi/a
+
     punto_medio <- reg-(b*cos(a*0)/a-b*cos(a*pi/a)/a)/2
     tclave <- acos((-16-punto_medio)*a/b)/a
     t=rep(0,size)

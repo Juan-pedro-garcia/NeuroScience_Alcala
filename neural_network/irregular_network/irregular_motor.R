@@ -2,7 +2,7 @@ library(plotly)
 source("./funciones.R")
 posiciones <- c(2,3,4,6,7,8)
 n_op <- c(2,3,2,3,2,2)
-for(num_resultados in c(129:144 )) {
+for(num_resultados in c(1:144 )) {
   
 
   resultados <- data.frame("0",0,0,0,0)
@@ -92,20 +92,9 @@ for(num_resultados in c(129:144 )) {
                                                                   fuerza[i,j],sinapsis[i,j]*con_parcial[i]) 
       }
     }
-    
-    
-    
-    
-    
-    # circuito[which(tipos=="IFB"),which(tipos=="ISB")] <- conexiones(IFB,ISB,-8,marcador[1]*3)
-    # circuito[which(tipos=="IFB"),which(tipos=="IS")] <- conexiones(IFB,IS,-8,marcador[2]*3)
-    # circuito[which(tipos=="ISB"),which(tipos=="IFB")] <- conexiones(ISB,IFB,8,marcador[3]*3)
-    # circuito[which(tipos=="ISB"),which(tipos=="IS")] <- conexiones(ISB,IS,8,marcador[4]*3)
-    # circuito[which(tipos=="IS"),which(tipos=="ISB")] <- conexiones(IS,ISB,8,marcador[5]*3)
-    # circuito[which(tipos=="IS"),which(tipos=="IFB")] <- conexiones(IS,IFB,8,marcador[6]*3)
+
     IS_RANDOM <- sample(which(tipos=="IS"),IS/3)
     circuito[IS_RANDOM,] <- circuito[IS_RANDOM,]*(-1)
-    # circuito[sample(size,size/3),] <- circuito[sample(size,size/3),]*(-1)
     ########################
     #      Simulación      #
     ########################

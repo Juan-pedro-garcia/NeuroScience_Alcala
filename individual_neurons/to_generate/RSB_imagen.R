@@ -42,7 +42,7 @@ for (c in seq(-68,-75,by=-1)) {
       frec_intra <- 1/(mean(frec_intra)/1000)
       if(frec_intra<25 & frec_intra>12){contador <- contador+1}
       
-      if(contador==2){correctos <- rbind(correctos,c(a,b,periodo,rafaga,frec_intra,d,1/periodo*1000))}
+      if(contador==2){correctos <- rbind(correctos,c(a,b,periodo,rafaga,frec_intra,c,1/periodo*1000))}
     }
   }
   

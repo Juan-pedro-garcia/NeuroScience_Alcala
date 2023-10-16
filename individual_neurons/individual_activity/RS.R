@@ -4,9 +4,11 @@ reg <- -13
 
 datos_RS <- read.csv2("./RS_valors.csv2")
 
-a=datos_RS[200,2]
-b=datos_RS[200,3]
-periodo=datos_RS[200,4]
+
+
+a=datos_RS[2,2]
+b=datos_RS[2,3]
+periodo=datos_RS[2,4]
 t=0
 
 punto_medio <- reg-(b*cos(a*0)/a-b*cos(a*pi/a)/a)/2

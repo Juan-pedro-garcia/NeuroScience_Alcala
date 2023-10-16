@@ -28,7 +28,7 @@ for (periodo in seq(150,1000,by=1)){
     diferencia <- tiempos[-1]-tiempos[-length(tiempos)]
     if (length(diferencia)==0){next}
     if( !(any(diferencia<=(periodo-5)) || any(diferencia>=(periodo+5) ))){
-      correctos <- rbind(correctos,c(a,b,periodo,frec_intra,1/periodo*1000))
+      correctos <- rbind(correctos,c(a,b,periodo,1/periodo*1000))
       
       
     }

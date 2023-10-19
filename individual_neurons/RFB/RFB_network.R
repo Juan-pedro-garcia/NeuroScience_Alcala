@@ -1,7 +1,7 @@
 library(plotly)
 source("./funciones.R")
 set.seed(sample(c(1:9999),1))
-datos_RFB <- read.csv2("./RFB_valors.csv2")
+datos_RFB <- read.csv2("./RFB_values.csv2")
 aceptables_RFB <- which(datos_RFB[,"freq_inter"]>2 & datos_RFB[,"freq_inter"]<9 &datos_RFB[,"freq_intra.ms."]>100)
 
 

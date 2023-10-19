@@ -9,7 +9,7 @@ colnames(circuito ) <- rep("RSB",10)
 rownames(circuito ) <- rep("RSB",10)
 circuito <-  conexiones(10,10,8,3)
 
-datos_RSB <- read.csv2("./RSB_valors.csv2")
+datos_RSB <- read.csv2("./RSB_values.csv2")
 aceptables_RSB <- which(datos_RSB[,"freq_inter"]>0.4 &datos_RSB[,"freq_inter"]<0.5 & datos_RSB[,"freq_intra.ms."]<20)
 
 valid <- sample(aceptables_RSB,10,replace = TRUE)

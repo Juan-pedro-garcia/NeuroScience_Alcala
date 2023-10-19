@@ -2,15 +2,15 @@ library(plotly)
 
 datos_RFB <- read.csv2("./RFB_values.csv2")
 
-a=datos_RFB[200,"a"]
-b=datos_RFB[200,"b"]
-c=datos_RFB[200,"c"]
+neuron_num <- 2109 
 
-periodo <- datos_RFB[200,"period"]
-vector_voltajes <- c
+a=datos_RFB[neuron_num,"a"]
+b=datos_RFB[neuron_num,"b"]
+c=datos_RFB[neuron_num,"c"]
+
+periodo <- datos_RFB[neuron_num,"period"]
+volt <- c
 reg <- -13
-
-
 t=0
 
 punto_medio <- reg-(b*cos(a*0)/a-b*cos(a*pi/a)/a)/2
@@ -23,16 +23,15 @@ for(i in 1:500){
   # if(i==25000 ){input <- +20}else{if(i==1500){input <- 10}
   # else{input <- 0}}
   t=t+1
-  vector_voltajes=vector_voltajes+0.5*((0.04*vector_voltajes+5)*vector_voltajes+140-reg+input)
-  vector_voltajes=vector_voltajes+0.5*((0.04*vector_voltajes+5)*vector_voltajes+140-reg+input)
+  volt=volt+0.5*((0.04*volt+5)*volt+140-reg+input)
+  volt=volt+0.5*((0.04*volt+5)*volt+140-reg+input)
   reg <- reg-sin((t)*(a))*(b)
   x[i,1] <- i
-  x[i,2] <- vector_voltajes
+  x[i,2] <- volt
 
   
-  if (vector_voltajes>30) {
-    tiempos <- c(tiempos,i)
-    vector_voltajes <- c
+  if (volt>30) {
+    volt <- c
   }
   if(input!=0){
     t <- round(t+(tclave-t%%(periodo/2)*(input/20)))

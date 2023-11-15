@@ -71,15 +71,15 @@ system.time({
   
   #the function "conexiones" create conexion between two types of neurons
   
-  circuito[which(tipos=="RSB"),which(tipos=="A")] <- conexiones(RSB,A,6,4)
-  circuito[which(tipos=="A"),which(tipos=="A")] <- conexiones(A,A,13,4)
-  circuito[which(tipos=="A"),which(tipos=="RS")] <- conexiones(A,RS,18,4)
-  circuito[which(tipos=="A"),which(tipos=="RFB")] <- conexiones(A,RFB,13,4)
-  circuito[which(tipos=="RS"),which(tipos=="A")] <- conexiones(RS,A,13,4)
-  circuito[which(tipos=="RS"),which(tipos=="ISe")] <- conexiones(RS,ISe,13,4)
-  circuito[which(tipos=="RFB"),which(tipos=="ISB")] <- conexiones(RFB,ISB,13,4)
-  circuito[which(tipos=="ISB"),which(tipos=="IFB")] <- conexiones(ISB,IFB,13,4)
-  circuito[which(tipos=="ISe"),which(tipos=="IFB")] <- conexiones(ISe,IFB,13,4)
+  # circuito[which(tipos=="RSB"),which(tipos=="A")] <- conexiones(RSB,A,6,4)
+  # circuito[which(tipos=="A"),which(tipos=="A")] <- conexiones(A,A,13,4)
+  # circuito[which(tipos=="A"),which(tipos=="RS")] <- conexiones(A,RS,18,4)
+  # circuito[which(tipos=="A"),which(tipos=="RFB")] <- conexiones(A,RFB,13,4)
+  # circuito[which(tipos=="RS"),which(tipos=="A")] <- conexiones(RS,A,13,4)
+  # circuito[which(tipos=="RS"),which(tipos=="ISe")] <- conexiones(RS,ISe,13,4)
+  # circuito[which(tipos=="RFB"),which(tipos=="ISB")] <- conexiones(RFB,ISB,13,4)
+  # circuito[which(tipos=="ISB"),which(tipos=="IFB")] <- conexiones(ISB,IFB,13,4)
+  # circuito[which(tipos=="ISe"),which(tipos=="IFB")] <- conexiones(ISe,IFB,13,4)
 
   
   #############################
@@ -164,7 +164,7 @@ system.time({
         contador[disp,1] <-contador[disp,1]+ delays[disp]
         contador[disp,2] <- contador[disp,2]+1
         
-        volt[disp]<- d[disp]
+        volt[disp]<- c[disp]
         
         reg[DI]=reg[DI]+d[DI]
         reg[DA] <- -13

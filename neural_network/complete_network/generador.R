@@ -14,14 +14,14 @@ system.time({
   
   ##caracterización neuronas##
   #number of neurons of each class
-  ISe <- 59
-  ISi <- 4
-  ISB <- 7
-  IFB <- 26
-  A <- 9
-  RS <- 12
-  RSB <- 6
-  RFB <- 2
+  ISe <- 0
+  ISi <- 0
+  ISB <- 0
+  IFB <- 0
+  A <- 1
+  RS <- 60
+  RSB <- 30
+  RFB <- 10
   
   #three constant are needed to each class
   #regular neurons depend on a Simple armonic Movement function, so the need
@@ -46,7 +46,7 @@ system.time({
          rep(-65,RS),datos_RSB[g,"c"],datos_RFB[h,"c"])
   
   d <- c(rep(8,ISe),rep(8,ISi),runif(ISB,-8,-8),runif(IFB,-8,-7.95),rep(8,A))
-  periodo <-c(datos_RS[f,"period"],datos_RSB[g,"period"],datos_RFB[h,"period"])
+  periodo <-c(d,datos_RS[f,"period"],datos_RSB[g,"period"],datos_RFB[h,"period"])
   
   ######## diseño circuito ######
   cantidad_neu <- c(ISe,ISi,ISB,IFB,A,RS,RSB,RFB)
@@ -71,6 +71,10 @@ system.time({
   
   #the function "conexiones" create conexion between two types of neurons
   
+  circuito[which(tipos=="RSB"),which(tipos=="RS")] <- conexiones(RSB,RS,13,4)
+  circuito[which(tipos=="RS"),which(tipos=="RFB")] <- conexiones(RS,RFB,-13,4)
+  circuito[which(tipos=="RS"),which(tipos=="RSB")] <- conexiones(RS,RSB,-13,4)
+  circuito[which(tipos=="RFB"),which(tipos=="RSB")] <- conexiones(RFB,RSB,13,4)
   # circuito[which(tipos=="RSB"),which(tipos=="A")] <- conexiones(RSB,A,6,4)
   # circuito[which(tipos=="A"),which(tipos=="A")] <- conexiones(A,A,13,4)
   # circuito[which(tipos=="A"),which(tipos=="RS")] <- conexiones(A,RS,18,4)

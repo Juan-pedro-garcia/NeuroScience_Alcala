@@ -97,7 +97,7 @@ system.time({
   
   max_delay <- 5
   min_delay <- 1
-  tiempo <- 10
+  tiempo <- 100
   
   ############  parámetros y variables internos###############
   

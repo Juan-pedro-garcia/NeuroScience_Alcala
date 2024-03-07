@@ -30,6 +30,7 @@ conexiones <- function( pres,post, fuerza,nc){
 calculo_frecuencia<- function(bin=0.200,              #bin <- float; tiempo previo al disparo que se usa para calcular la frecuencia
                               grupo,                  #grupo <- lista; lista con el tiempo de disparo de cada neurona el grupo.
                               nombres_grupos=NULL,    #nombres_grupo <- vector; lps nombres de las neuronas que entran en el grupo
+                              time,
                               do_plots=FALSE,         #do_plots <- boolean; si TRUE genera las gráficas de frecuencia de los grupos de neuronas.
                               do_plot_general=FALSE){ #do_plots_general <- boolean; si TRUE genera las gráficas de frecuencia de todas las neuronas.
   
@@ -66,14 +67,17 @@ calculo_frecuencia<- function(bin=0.200,              #bin <- float; tiempo prev
     }
     frame_freq_todo[,2] <- frame_freq_todo[,2]/1000
     frame_freq_todo <- frame_freq_todo[which(!is.na(frame_freq_todo[,1])),]
-    if(isTRUE(do_plots) & h<length(grupo)){
-      plots[[h]] <- plot_ly(frame_freq_todo, x=~V2, y=~V1, type ="scatter",
-                            mode = 'lines',name=nombres_grupos[h])
+    frame_freq_todo <- rbind(frame_freq_todo,c(0,frame_freq_todo[nrow(frame_freq_todo),2]+0.01),c(0,time))
+    if(isTRUE(do_plots) & h<length(grupo)){plots[[h]] <- plot_ly(frame_freq_todo, x=~V2, y=~V1, type ="scatter",
+                                                                 mode = 'lines',name=nombres_grupos[h])
     }
   }
   if(isTRUE(do_plots)){print(subplot(plots,nrows = length(plots)))}
-  if(isTRUE(do_plot_general)){print(plot_ly(frame_freq_todo,x=~V2,y=~V1,type ="scatter",
-                                            mode="lines", name="todo"))}
+  if(isTRUE(do_plot_general)){
+    print(plot_ly(frame_freq_todo,x=~V2,y=~V1,type ="scatter",
+                  mode="lines", name="todo"))}
+  frame_freq_todo <- frame_freq_todo[-c(nrow(frame_freq_todo),nrow(frame_freq_todo)-1),]
+  
   return(frame_freq_todo)#devuelve un dataframe de dos columnas: 
   #la primera con la frecuencia de disparos 
   #la segunda con el tiempo de cada disparo.

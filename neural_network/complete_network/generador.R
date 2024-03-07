@@ -14,20 +14,20 @@ system.time({
   
   ##caracterización neuronas##
   #number of neurons of each class
-  ISe <- 0
-  ISi <- 0
+  ISe <- 5
+  ISi <- 5
   ISB <- 0
-  IFB <- 0
+  IFB <- 5
   A <- 1
-  RS <- 60
-  RSB <- 30
-  RFB <- 10
+  RS <- 0
+  RSB <- 10
+  RFB <- 0
   
   #three constant are needed to each class
   #regular neurons depend on a Simple armonic Movement function, so the need
   #angular velocity and Amplitud. 
   #the constant "a" of the regular neurons depends of the period.
-
+  
   
   h <- sample(aceptables_RFB,RFB,replace = TRUE)
   f <- sample(aceptables_RS,RS,replace = TRUE)
@@ -49,7 +49,14 @@ system.time({
   periodo <-c(d,datos_RS[f,"period"],datos_RSB[g,"period"],datos_RFB[h,"period"])
   
   ######## diseño circuito ######
-  cantidad_neu <- c(ISe,ISi,ISB,IFB,A,RS,RSB,RFB)
+  num_irre <- c(ISe,ISi,ISB,IFB,A)
+  num_reg <- c(RS,RSB,RFB)
+  names_irreg <- c("ISe","ISi","ISB","IFB","A")
+  names_reg <- c("RS","RSB","RFB")
+  
+  
+  
+  cantidad_neu <- c(num_irre,num_reg)
   
   size <- sum(cantidad_neu) #total number of neurons
   
@@ -59,10 +66,15 @@ system.time({
   burst <- which(tipos%in%c("IFB","ISB","RSB","RFB"))
   datos_conexiones <- data.frame(nombres_neu,cumsum(cantidad_neu))
   
+  
+  
   colnames(datos_conexiones) <- c("nombre","numero_neurons_tipo")
   colnames(circuito ) <- tipos
   rownames(circuito ) <- tipos
   
+  
+  pos_irreg <- which(colnames(circuito)%in%(names_irreg))
+  pos_reg <- which(colnames(circuito)%in%(names_reg))  
   ############################
   # generador aleatorio de   #
   #         conexiones       #
@@ -71,10 +83,10 @@ system.time({
   
   #the function "conexiones" create conexion between two types of neurons
   
-  circuito[which(tipos=="RSB"),which(tipos=="RS")] <- conexiones(RSB,RS,13,4)
-  circuito[which(tipos=="RS"),which(tipos=="RFB")] <- conexiones(RS,RFB,-13,4)
-  circuito[which(tipos=="RS"),which(tipos=="RSB")] <- conexiones(RS,RSB,-13,4)
-  circuito[which(tipos=="RFB"),which(tipos=="RSB")] <- conexiones(RFB,RSB,13,4)
+  # circuito[which(tipos=="RSB"),which(tipos=="RS")] <- conexiones(RSB,RS,13,4)
+  # circuito[which(tipos=="RS"),which(tipos=="RFB")] <- conexiones(RS,RFB,-13,4)
+  # circuito[which(tipos=="RS"),which(tipos=="RSB")] <- conexiones(RS,RSB,-13,4)
+  # circuito[which(tipos=="RFB"),which(tipos=="RSB")] <- conexiones(RFB,RSB,13,4)
   # circuito[which(tipos=="RSB"),which(tipos=="A")] <- conexiones(RSB,A,6,4)
   # circuito[which(tipos=="A"),which(tipos=="A")] <- conexiones(A,A,13,4)
   # circuito[which(tipos=="A"),which(tipos=="RS")] <- conexiones(A,RS,18,4)
@@ -84,7 +96,7 @@ system.time({
   # circuito[which(tipos=="RFB"),which(tipos=="ISB")] <- conexiones(RFB,ISB,13,4)
   # circuito[which(tipos=="ISB"),which(tipos=="IFB")] <- conexiones(ISB,IFB,13,4)
   # circuito[which(tipos=="ISe"),which(tipos=="IFB")] <- conexiones(ISe,IFB,13,4)
-
+  
   
   #############################
   #        SIMULACION         #
@@ -108,7 +120,10 @@ system.time({
   reg <- rep(-13,size)
   inputs <- rep(0, size)
   
-  lim <- datos_conexiones[5,2]
+  
+  
+  lim <- sum(num_irre)
+  
   
   punto_medio <- reg-(b*cos(a*0)/a-b*cos(a*pi/a)/a)/2
   tclave <- acos((-16-punto_medio)*a/b)/a
@@ -148,21 +163,21 @@ system.time({
     for (i in 1:1000) {
       t=t+1
       
-      volt[1:(lim)]=volt[1:(lim)]+0.5*((0.04*volt[1:(lim)]+5)*volt[1:(lim)]+140-reg[1:(lim)]+inputs[1:(lim)])
-      volt[1:(lim)]=volt[1:(lim)]+0.5*((0.04*volt[1:(lim)]+5)*volt[1:(lim)]+140-reg[1:(lim)]+inputs[1:(lim)])
-      reg[1:(lim)]=reg[1:(lim)]+a[1:(lim)]*(b[1:(lim)]*volt[1:(lim)]-reg[1:(lim)]);
+      volt[pos_irreg]=volt[pos_irreg]+0.5*((0.04*volt[pos_irreg]+5)*volt[pos_irreg]+140-reg[pos_irreg]+inputs[pos_irreg])
+      volt[pos_irreg]=volt[pos_irreg]+0.5*((0.04*volt[pos_irreg]+5)*volt[pos_irreg]+140-reg[pos_irreg]+inputs[pos_irreg])
+      reg[pos_irreg]=reg[pos_irreg]+a[pos_irreg]*(b[pos_irreg]*volt[pos_irreg]-reg[pos_irreg]);
       
-      volt[(lim+1):size]=volt[(lim+1):size]+0.5*((0.04*volt[(lim+1):size]+5)*volt[(lim+1):size]+140-reg[(lim+1):size]+inputs[(lim+1):size])
-      volt[(lim+1):size]=volt[(lim+1):size]+0.5*((0.04*volt[(lim+1):size]+5)*volt[(lim+1):size]+140-reg[(lim+1):size]+inputs[(lim+1):size])
-      reg[(lim+1):size] <- reg[(lim+1):size]-sin((t[(lim+1):size])*(a[(lim+1):size]))*(b[(lim+1):size])
+      volt[pos_reg]=volt[pos_reg]+0.5*((0.04*volt[pos_reg]+5)*volt[pos_reg]+140-reg[pos_reg]+inputs[pos_reg])
+      volt[pos_reg]=volt[pos_reg]+0.5*((0.04*volt[pos_reg]+5)*volt[pos_reg]+140-reg[pos_reg]+inputs[pos_reg])
+      reg[pos_reg] <- reg[pos_reg]-sin((t[pos_reg])*(a[pos_reg]))*(b[pos_reg])
       
       inputs <- rep(0, size)
       
       if(any(volt>30)){
         
         disp <- which(volt>30)
-        DR <-c((lim+1):size)[which(c((lim+1):size)%in%disp)] 
-        DI <- c(1:(lim))[which(c(1:(lim))%in%disp)]
+        DR <-c(pos_reg)[which(c(pos_reg)%in%disp)] 
+        DI <- c(pos_irreg)[which(c(pos_irreg)%in%disp)]
         DA <- which(disp%in%list_aferentes)
         
         contador[disp,1] <-contador[disp,1]+ delays[disp]
@@ -194,13 +209,14 @@ system.time({
       if(!identical(y, integer(0))){
         if (length(y)==1) {inputs <- circuito[y,]
         }else{inputs <- colSums(circuito[y,]) }
-        receptor <- which(inputs!=0)[which(inputs!=0)%in%c((lim+1):size)]   
+        receptor <- which(inputs!=0)[which(inputs!=0)%in%c(pos_reg)]   
         t[receptor] <- round(t[receptor]+((tclave[receptor]-t[receptor]%%(periodo[receptor]/2))*(inputs[receptor]/20)))
         reg[receptor] <- punto_medio[receptor]+b[receptor]*cos(a[receptor]*t[receptor])/a[receptor]
       }
       
       
     }
+    
     sim_con <- c(sim_con,sim_short_con)
     sim_con_2 <- c(sim_con_2,sim_short_con_2)
     for (i in 1:size) {
@@ -210,7 +226,9 @@ system.time({
       grupo[[i]] <- c(grupo[[i]],grupocorto[[i]])
       
     }
+    
   }
+  
   grupo[[length(grupo)+1]] <- sim_con
   maximo <- max(sapply(sim,length))
   final <- data.frame(matrix(data=NA, nrow=maximo, ncol=size))
@@ -221,15 +239,14 @@ system.time({
   }
   
   
-  
   colnames(final) <- (nah)
   colnames(final) <- tipos
-  
-  #############################
-  #         METRICAS          #
-  #############################
-  
-  
+})
+#############################
+#         METRICAS          #
+#############################
+
+if(any(grupo[[length(grupo)]]!=0)){
   lista_metricas <- list()
   metricas <- data.frame(c(rep(0,5)))
   tipo_irre_burst <- c("IFB","ISB")
@@ -269,71 +286,79 @@ system.time({
     metricas_temp <- c(media, CV, media_intraburst,media_interburst,CV_intrab)
     lista_metricas[[nom]] <- cbind(lista_metricas[[nom]],metricas_temp)
   }
-  
-  for(i in 1:length(lista_metricas)){
-    metricas_temp <- apply(lista_metricas[[i]],MARGIN = 1,FUN = mean)
-    metricas <- cbind(metricas,metricas_temp)
-  }
-  
-  metricas <- metricas[,-1]
-  colnames(metricas) <- names(lista_metricas)
-  
-  rownames(metricas) <- c("media","CV","media_intraburst","media_interburst","CV_intrab")
-  
-  
-  
-  
-})
-
-#######################
-#       EVENTOS       #
-#######################
-#se considera que se produce un evento cuando la frecuencia de disparos en los 200ms 
-#anteriores a un disparo supera un umbral.
-
-vector_metricas <- as.matrix(metricas)[which(!is.na(metricas))]
-
-grupo
-
-#calculo de frecuencias usando 200ms de ventana
-freq_200 <- calculo_frecuencia(0.200,
-                               grupo[length(grupo)],
-                               nombres_grupos,
-                               do_plots = F,
-                               do_plot_general = TRUE) #si TRUE genera la gráfica de eventos
-umbral<-mean(freq_200[,1])*2 #selecciona el umbral
-
-#calcula los maximos en el umbral.
-maximos <- calculo_maximos_eventos(freq_200,umbral)
-
-
-#el tiempo exacto del evento se calcula con las frecuencis de los disparos en sus 20 ms previos
-#que se hayan producido en los 250ms previos al instante del evento calculado anteriormente.
-freq_20 <- calculo_frecuencia(0.02,grupo[length(grupo)])
-
-
-
-i=1
-j=1
-k=0
-freq_temp <- data.frame(0,0)
-max_event <- c()
-while (i<=length(maximos)) {
-  if (freq_20[j,2]<(maximos[i]-0.25)) {
-    j=j+1
-  }else{
-    if (freq_20[j,2]>maximos[i]) {
-      i=i+1
-      k=0
-      max_event <- c(max_event,freq_temp[which.max(freq_temp[,1]),2])
-      freq_temp <- data.frame(0,0)
-    }else{
-      k=k+1
-      freq_temp[k,] <- freq_20[j,]
-      j=j+1
+  if (length(lista_metricas)!=0) {
+    for(i in 1:length(lista_metricas)){
+      metricas_temp <- apply(lista_metricas[[i]],MARGIN = 1,FUN = mean)
+      metricas <- cbind(metricas,metricas_temp)
     }
   }
   
+  metricas <- metricas[,-1]
+  if (!is.null(ncol(metricas))) {
+    colnames(metricas) <- names(lista_metricas)
+    
+    rownames(metricas) <- c("media","CV","media_intraburst","media_interburst","CV_intrab")
+  }
+  
+  
+  
+  
+  
+  #######################
+  #       EVENTOS       #
+  #######################
+  #se considera que se produce un evento cuando la frecuencia de disparos en los 200ms 
+  #anteriores a un disparo supera un umbral.
+  
+  vector_metricas <- as.matrix(metricas)[which(!is.na(metricas))]
+  
+  
+  
+  #calculo de frecuencias usando 200ms de ventana
+  freq_200 <- calculo_frecuencia(0.200,
+                                 grupo[length(grupo)],
+                                 nombres_grupos,
+                                 tiempo,
+                                 do_plots = F,
+                                 do_plot_general = TRUE) #si TRUE genera la gráfica de eventos
+  umbral<-mean(freq_200[,1])*2 #selecciona el umbral
+  
+  #calcula los maximos en el umbral.
+  maximos <- calculo_maximos_eventos(freq_200,umbral)
+  
+  
+  #el tiempo exacto del evento se calcula con las frecuencis de los disparos en sus 20 ms previos
+  #que se hayan producido en los 250ms previos al instante del evento calculado anteriormente.
+  freq_20 <- calculo_frecuencia(0.02,grupo[length(grupo)],time=tiempo)
+  
+  
+  
+  i=1
+  j=1
+  k=0
+  freq_temp <- data.frame(0,0)
+  max_event <- c()
+  while (i<=length(maximos)) {
+    if (freq_20[j,2]<(maximos[i]-0.25)) {
+      j=j+1
+    }else{
+      if (freq_20[j,2]>maximos[i]) {
+        i=i+1
+        k=0
+        max_event <- c(max_event,freq_temp[which.max(freq_temp[,1]),2])
+        freq_temp <- data.frame(0,0)
+      }else{
+        k=k+1
+        freq_temp[k,] <- freq_20[j,]
+        j=j+1
+      }
+    }
+  }
+  max_event #tiempos de los eventos.
+}else{
+  zeros <- data.frame(c(0,0),c(0,tiempo))
+  colnames(zeros) <- c("V1","V2")
+  print(plot_ly(zeros,x=~V2,y=~V1,type ="scatter",
+                mode="lines", name="todo"))
+  max_event=0
 }
-
-max_event #tiempos de los eventos.
